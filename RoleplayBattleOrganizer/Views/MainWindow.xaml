@@ -1,0 +1,383 @@
+﻿<Window x:Class="RoleplayBattleOrganizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:RoleplayBattleOrganizer.ViewsModels"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="RPG Battle Organizer"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        mc:Ignorable="d"
+        Unloaded="Window_Unloaded"  Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        Background="Khaki">
+
+    <Window.Resources>
+
+        <Style TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="Width" Value="125" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="MaxWidth" Value="125" />
+        </Style>
+        <Style TargetType="ScrollViewer">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+
+        <!--  Region Grid Definisions  -->
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="579" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500" />
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <!--  End Region  -->
+
+        <StackPanel 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="9" 
+            Orientation="Horizontal" >
+
+            <StackPanel HorizontalAlignment="Center" Margin="5 0 5 0">
+                <Label Content="Dodaj obrażenia:" />
+                <TextBox Text="{Binding Damage}" Width="40" 
+                         Background="Red" Foreground="White"
+                         FontSize="26"/>
+                <Button Command="{Binding CommandAddDamage}"
+                    CommandParameter="{Binding Damage}"
+                    Content="Ok"
+                        Width="120"
+                    Height="30"
+                    Margin="15 5 15 5"
+                    IsEnabled="{Binding IsDamageEnabled}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="5 0 5 0"  HorizontalAlignment="Center">
+                <Label Content="Ulecz gracza :" />
+                <TextBox Text="{Binding Healing}" Width="40" 
+                         Background="Green" Foreground="White"
+                         FontSize="26"/>
+                <Button Command="{Binding CommandAddHealing}"
+                    CommandParameter="{Binding Healing}"
+                    Content="Ok"
+                    Height="30"
+                        Width="120"
+                    Margin="15 5 15 5"
+                    IsEnabled="{Binding IsHealingEnabled}" />
+            </StackPanel>
+
+            <StackPanel Width="400" HorizontalAlignment="Center" Margin="5 0 5 0">
+                <Label Content="Wybrana postać:" FontSize="16" FontWeight="Bold" />
+                <TextBlock 
+                    FontWeight="Bold"
+                    Foreground="DarkGreen"
+                    Text="{Binding CurrentFighterLabel}"
+                    FontSize="40"/>
+            </StackPanel>
+
+        </StackPanel>
+
+
+
+        <Menu Grid.Row="0"
+              Grid.Column="0"
+              Grid.ColumnSpan="10">
+            <MenuItem Header="Plik">
+                <MenuItem Command="{Binding CommandClose}" Header="Zamknij" />
+            </MenuItem>
+            <MenuItem Header="Opcje">
+                <RadioButton Content="Warhammer" IsChecked="{Binding IsWHChecked}"/>
+                <RadioButton Content="DnD" IsChecked="{Binding IsDnDChecked}"/>
+            </MenuItem>
+            <MenuItem Header="Info">
+                <MenuItem Command="{Binding CommandAbout}" Header="O programie" />
+            </MenuItem>
+        </Menu>
+
+
+        <Border Grid.Row="2"
+                Grid.Column="1"
+                BorderBrush="Black" 
+                BorderThickness="2">
+
+            <Grid Margin="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="250" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Content="Nowa postać: "
+                       FontWeight="Bold" />
+
+
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Content="Modyfikator inicjatywy:"
+                       HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="1"
+                         TabIndex="0"
+                         Grid.Column="1"
+                         Style="{StaticResource FormTextBox}"
+                         Text="{Binding InitiativeRoll, UpdateSourceTrigger=PropertyChanged}" 
+                         KeyDown="TextBox_KeyDown"/>
+                <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Content="Imię" 
+                       HorizontalAlignment="Right"/>
+                <TextBox Grid.Row="2"
+                         Grid.Column="1"
+                         TabIndex="1"
+                         Style="{StaticResource FormTextBox}"
+                         Text="{Binding NameNew, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Content="Gracz"
+                       HorizontalAlignment="Right" />
+                <TextBox Grid.Row="3"
+                         Grid.Column="1" TabIndex="2"
+                         Style="{StaticResource FormTextBox}"
+                         Text="{Binding GamerNew, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label 
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Content="HP"
+                    HorizontalAlignment="Right"/>
+                <TextBox 
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    TabIndex="3"
+                    Style="{StaticResource FormTextBox}"
+                    Text="{Binding HpNew, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label 
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Content="Klasa/Profesja" 
+                    HorizontalAlignment="Right"/>
+                <TextBox 
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    TabIndex="4"
+                    Style="{StaticResource FormTextBox}"
+                    Text="{Binding ProfessionNew, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label 
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Content="Typ" 
+                    HorizontalAlignment="Right"/>
+                <ComboBox Grid.Row="6"
+                      Grid.Column="1"
+                      TabIndex="5"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding FighterGamerType}"
+                      SelectedItem="{Binding SelectedFighterGamerType, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Grid.Row="7"
+                       Grid.Column="0"
+                       Content="System" 
+                       HorizontalAlignment="Right"/>
+                <ComboBox Grid.Row="7"
+                      Grid.Column="1"
+                      TabIndex="6"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding FighterSystemType}"
+                      SelectedItem="{Binding SelectedFighterSystemType, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button 
+                    Name="btnSaveOrEditFighter"
+                    Grid.Row="8"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="5"
+                    Height="40"
+                    Margin="15 5 15 5"
+                    Padding="2"
+                    TabIndex="7"
+                    Width="180"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Command="{Binding CommandAddGamer}"
+                    Content="Dodaj/Edytuj postać"
+                    IsEnabled="{Binding IsAddNewGamerEnabled}"
+                        FontSize="14"
+                        FontWeight="Bold"/>
+
+                <Label 
+                       Grid.Row="9"
+                       Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                       Content="Postaci zapisane w programie:"
+                       FontWeight="Bold" />
+
+                <ScrollViewer
+                    Grid.Row="10"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Stretch" Margin="0,0,-45,0">
+
+                    <DataGrid 
+                          AutoGenerateColumns="False"
+                          FontSize="12"
+                          RowHeight="30"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding SavedFightersCollection}"
+                          SelectedItem="{Binding SelectedSavedFighter}"
+                          SelectionMode="Single"
+                          MouseDoubleClick="DataGrid_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Initiative}"
+                                        FontWeight="Bold"
+                                        Header="Init." />
+                            <DataGridTextColumn Binding="{Binding Name}"
+                                        FontWeight="Bold"
+                                        Header="Imię" />
+                            <DataGridTextColumn Binding="{Binding HP}" Header="HP" />
+                            <DataGridTextColumn Binding="{Binding Gamer}" Header="Gracz" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="Prof." />
+                            <DataGridTextColumn Binding="{Binding Profession}" Header="Prof." />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Dodaj gracza do starcia" Command="{Binding CommandAddSavedFighterToFightersList}"></MenuItem>
+                                <MenuItem Header="Usuń gracza z listy" Command="{Binding CommandDeleteFromSavedFightersList}" ></MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                </ScrollViewer>
+
+
+            </Grid>
+
+        </Border>
+
+
+        <Border Grid.Row="2" Grid.Column="0" 
+                BorderBrush="Black" 
+                BorderThickness="2">
+            <StackPanel Orientation="Vertical" >
+
+                <Label Grid.Row="3"
+               Grid.Column="0"
+               Content="Postaci uczestniczące w spotkaniu:"
+               FontWeight="Bold" />
+
+                <StackPanel Orientation="Horizontal" >
+                    <Button Margin="5" Command="{Binding CommandResetTable}" 
+                            Content="Resetuj tabele" Width="150"
+                            FontWeight="Bold" FontSize="14"/>
+
+                    <Button Margin="5" Command="{Binding CommandDeleteSelected}" 
+                            CommandParameter="{Binding SelectedFighter}" Width="150"
+                            Content="Usuń wybraną postać" IsEnabled="{Binding IsDamageEnabled}"
+                            FontWeight="Bold" FontSize="14" />
+                </StackPanel>
+
+                <DockPanel>
+                    <ScrollViewer DockPanel.Dock="Top">
+                        <DataGrid 
+                              AutoGenerateColumns="False"
+                              FontSize="22"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding FightersCollection, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedFighter}"
+                              SelectionMode="Single"
+                              ScrollViewer.CanContentScroll="True" Height="510">
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="BorderBrush" Value="Blue" />
+                                            <Setter Property="BorderThickness" Value="2" />
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding IsAlive}" Value="False">
+                                            <Setter Property="Background" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsAlive}" Value="True">
+                                            <Setter Property="Background" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDamaged}" Value="True">
+                                            <Setter Property="Background" Value="Yellow" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHeavilyInjured}" Value="True">
+                                            <Setter Property="Background" Value="Orange" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding InitiativeRoll}" FontWeight="Bold" Header="Init." />
+                                <DataGridTextColumn Binding="{Binding Name}"  FontWeight="Bold" Header="Imię" />
+                                <DataGridTextColumn Binding="{Binding HP}" Header="HP" />
+                                <DataGridTextColumn Binding="{Binding Gamer}" Header="Gracz" />
+                                <DataGridTextColumn Binding="{Binding Type}" Header="Prof." />
+                                <DataGridTextColumn Binding="{Binding Profession}" Header="Prof." />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <Border 
+            BorderBrush="Black"
+            BorderThickness="2"
+            Grid.Row="2"
+            Grid.Column="2">
+            <Grid>
+
+                <ScrollViewer>
+
+                    <TextBlock 
+                        Padding="4"
+                        Background="White"
+                        Text="{Binding Log}" 
+                        TextWrapping="Wrap" 
+                        FontSize="16"/>
+
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</Window>
